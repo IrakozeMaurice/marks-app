@@ -1,0 +1,65 @@
+/* Reset some default styles */
+body, ul, li {
+    margin: 0;
+    padding: 0;
+}
+
+/* Style the navigation bar */
+nav ul {
+    list-style: none;
+    display: flex;
+}
+
+nav li {
+    margin: 10px;
+}
+
+/* Style the carousel */
+.carousel {
+    display: flex;
+    overflow: hidden;
+}
+
+.carousel-item {
+    flex: 0 0 25%;
+    text-align: center;
+    padding: 20px;
+}
+
+.carousel img {
+    max-width: 100%;
+}
+
+/* Style the two columns */
+.content {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+}
+
+.column {
+    flex: 0 0 48%;
+}
+
+/* Style the cards */
+.cards {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding: 20px;
+}
+
+.card {
+    flex: 0 0 48%;
+    margin-bottom: 20px;
+    padding: 10px;
+    border: 1px solid #ccc;
+}
+
+/* Style the footer */
+footer {
+    text-align: center;
+    padding: 20px;
+    background-color: #333;
+    color: #fff;
+}
