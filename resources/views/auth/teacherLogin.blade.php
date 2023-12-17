@@ -2,7 +2,7 @@
   <x-auth-card>
     <x-slot name="logo">
       @if (session('success'))
-        <div class="bg-teal-500 text-white font-bold text-center mb-3 py-5 px-4 rounded-md">
+        <div class="bg-teal-500 text-white font-bold text-center mb-3 py-5 px-4 rounded-md" style="max-width: 400px;">
           {{ session('success') }}
         </div>
       @endif

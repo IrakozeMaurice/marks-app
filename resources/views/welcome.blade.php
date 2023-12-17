@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Laravel</title>
+  <title>{{ config('app.name') }}</title>
 
   <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
@@ -412,7 +412,7 @@
     @if (Route::has('login'))
       <div class="hidden fixed top-0 right-0 px-6 py-4 sm:block">
         @auth
-          <a href="/students/dashboard" class="text-sm text-gray-700 dark:text-gray-500 underline">Dashboard</a>
+          <a href="/dashboard" class="text-sm text-gray-700 dark:text-gray-500 underline">Dashboard</a>
         @else
           <a href="/login" class="text-sm text-gray-700 dark:text-gray-500 underline">Log in</a>
 
@@ -426,7 +426,7 @@
 
     <div class="max-w-6xl mx-auto sm:px-6 lg:px-8" style="width: 80%;margin:auto;">
       <div class="flex justify-center pt-8 sm:justify-start sm:pt-0">
-        <img src="{{ asset('images/aucaLogo.png') }}" alt="Auca logo">
+        <img src="{{ asset('images/aucaLogo.png') }}" alt="Auca logo" style="width: 300px">
       </div>
 
       <div class="mt-8 bg-white dark:bg-gray-800 overflow-hidden shadow sm:rounded-lg" style="height:300px;">
@@ -440,7 +440,7 @@
                 </path>
               </svg>
               <div class="ml-4 text-lg leading-7 font-semibold text-primary">
-                <a href="/dashboard" class="underline" style="color: blue;">CONNECT TO THE MARKS APP</a>
+                <a href="/dashboard" class="underline">CONNECT TO THE MARKS APP</a>
               </div>
             </div>
 
@@ -534,7 +534,7 @@
           </div>
         </div>
         <div class="ml-4 text-center text-sm text-dark sm:text-right sm:ml-0">
-          Auca@2022
+          Auca@2023
         </div>
       </div>
     </div>

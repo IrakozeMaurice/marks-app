@@ -8,7 +8,10 @@
         <strong>{{ session('success') }}</strong>
       </div>
     @endif
-    <h1 class="mb-4">List of my courses</h1>
+
+    <div class="box mb-4">
+      <h2><b>My courses</b></h2>
+    </div>
 
     <table class="table mt-2 small">
       <tr>
@@ -24,14 +27,6 @@
           <td>{{ $course->credits }}</td>
           <td><a href="{{ route('teacher.marks.create', $course->code) }}"
               class="button is-small has-background-info has-text-white">Upload marks</a></td>
-          {{-- <td>
-            @if ($user->approved)
-              <span class="badge badge-info p-1">approved</span>
-            @else
-              <a class="button is-primary" href="{{ route('admin.users.edit', $user->id) }}">
-                approve</a>
-            @endif
-          </td> --}}
         </tr>
       @endforeach
       <tr>
@@ -40,6 +35,24 @@
         <td></td>
         <td></td>
       </tr>
+    </table>
+    <div class="box mt-4">
+      <h2><b>My Recently uploaded marks</b></h2>
+    </div>
+    <table class="table mt-2 small">
+
+      <tr>
+        <th>Marks title</th>
+        <th>Course code</th>
+        <th>Course name</th>
+      </tr>
+      @foreach ($marks as $mark)
+        <tr>
+          <td>{{ $mark->title }}</td>
+          <td>{{ $mark->course->code }}</td>
+          <td>{{ $mark->course->name }}</td>
+        </tr>
+      @endforeach
     </table>
   </div>
 @endsection

@@ -19,11 +19,23 @@
 
   <link href="{{ asset('css/sb-admin-2.min.css') }}" rel="stylesheet">
   <link href="{{ asset('css/fontawesome-all.css') }}" rel="stylesheet">
+  <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
   <link href="{{ asset('css/bulma.min.css') }}" rel="stylesheet">
+  <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 
-  @yield('styles')
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito&display=swap" rel="stylesheet" />
 
-  @yield('dataTableHead')
+  <style>
+    body {
+      font-family: "Nunito", monospace;
+    }
+
+    tr:has(td.rollno) {
+      background-color: #17a2b8;
+    }
+  </style>
 
 </head>
 
@@ -37,7 +49,6 @@
       style="background: #61c2d3;">
 
       <!-- Sidebar - Brand -->
-
 
       <!-- Divider -->
 
@@ -53,7 +64,6 @@
 
       <!-- Heading -->
 
-
       <!-- Nav Item -->
       <li class="nav-item font-bold">
         <a class="nav-link" href="{{ route('teacher.marks.index') }}">
@@ -61,42 +71,12 @@
           <span>Marks</span></a>
       </li>
 
-      {{-- <!-- Nav Item -->
-      <li class="nav-item">
-        <a class="nav-link" href="{{ route('teacher.marks.index') }}">
-          <i class="fas fa-fw fa-users"></i>
-          <span>Marks</span></a>
-      </li> --}}
-
       <!-- Nav Item -->
       <li class="nav-item font-bold">
-        <a class="nav-link" href="">
+        <a class="nav-link" href="{{ route('teacher.claims.index') }}">
           <i class="fas fa-fw fa-users"></i>
           <span>Claims</span></a>
       </li>
-
-      <!-- Nav Item - Reports Collapse Menu -->
-      <li class="nav-item font-bold">
-        <a
-          class="nav-link collapsed" data-toggle="collapse" data-target="#collapseTwo"
-          aria-expanded="true" aria-controls="collapseTwo">
-          <i class="fas fa-fw fa-cog"></i>
-          <span>Reports</span>
-        </a>
-        <div
-          id="collapseTwo"
-          class="collapse"
-          aria-labelledby="headingTwo"
-          data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Generate reports:</h6>
-            <a class="collapse-item" href="#">Report 1</a>
-            <a class="collapse-item" href="#">Report 2</a>
-          </div>
-        </div>
-      </li>
-
-
 
     </ul>
     <!-- End of Sidebar -->
@@ -110,10 +90,7 @@
         <!-- Topbar -->
         <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
 
-
-
           <!-- Topbar Search -->
-
 
           <!-- Topbar Navbar -->
 
@@ -160,14 +137,9 @@
 
           <!-- Content Row -->
 
-
           <div>
             @yield('content')
           </div>
-
-
-
-
 
         </div>
         <!-- /.container-fluid -->

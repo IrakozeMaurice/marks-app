@@ -32,12 +32,6 @@ class LoginToken extends Model
 
     public function send()
     {
-        // Mail::raw("<a href='{$url}'>Login to the app</a>", function ($message) {
-        //     // $message->to($this->teacherUser->email)
-        //     $message->to("iramaurimade@gmail.com")
-        //         ->subject("Login to Auca marks app");
-        // });
-
         Mail::to($this->teacherUser->email)->send(new LoginConfirmation($this->token));
     }
 

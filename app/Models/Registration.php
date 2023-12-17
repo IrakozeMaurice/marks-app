@@ -5,12 +5,17 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class RegistrationForm extends Model
+class Registration extends Model
 {
     use HasFactory;
 
 
     protected $guarded = [];
+
+    protected $casts = [
+        'semester_start_date' => 'date',
+        'semester_end_date' => 'date'
+    ];
 
     public function student()
     {
@@ -19,6 +24,8 @@ class RegistrationForm extends Model
 
     public function courses()
     {
-        return $this->hasMany(Course::class);
+        return $this->belongsToMany(Course::class)
+            ->withTimestamps()
+            ->withPivot(['group']);
     }
 }

@@ -13,11 +13,6 @@ class LoginConfirmation extends Mailable
 
     public $token;
 
-    /**
-     * Create a new message instance.
-     *
-     * @return void
-     */
     public function __construct($token)
     {
         $this->token = $token;
@@ -31,6 +26,6 @@ class LoginConfirmation extends Mailable
     public function build()
     {
         return $this->subject('Login to Auca marks app')
-            ->view('emails.loginConfirmation');
+            ->markdown('emails.login-confirmation');
     }
 }

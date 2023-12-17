@@ -2,19 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Imports\MarksExcelImport;
+use App\Models\Claim;
 use App\Models\Course;
 use App\Models\Mark;
-use App\Models\Teacher;
-use Illuminate\Http\Request;
+use Carbon\Carbon;
+use Maatwebsite\Excel\Facades\Excel;
 
 class TeacherController extends Controller
 {
-    //
-    /**
-     * redirect teacher after login
-     *
-     * @return \Illuminate\View\View
-     */
     public function index()
     {
         return view('teacher.home');
@@ -24,22 +20,39 @@ class TeacherController extends Controller
     public function indexmarks()
     {
         $client = new \GuzzleHttp\Client();
-        // GET STUDENT
-        $req = $client->get('http://localhost:9000/api/v2/auca/teacher/' . auth()->user()->email . '/courses');
+
+        try {
+            $req = $client->get('http://localhost:9000/api/v2/auca/teacher/' . auth()->user()->email . '/courses');
+        } catch (\Throwable $th) {
+            return back()->with('error', 'Failed to connect to remote server. check back later');
+        }
 
         $response = json_decode($req->getBody());
         $courses = $response->courses;
 
+        $courseIds = [];
         foreach ($courses as $course) {
-            Course::updateOrCreate([
+            $c = Course::updateOrCreate([
                 'code' => $course->code,
                 'name' => $course->name,
                 'credits' => $course->credits,
-            ])->teachers()->sync(auth()->user()->teacher_id);
+            ]);
+            $courseIds[] = $c->id;
         }
-        // dd($response->courses);
+        auth()->user()->teacher->courses()->sync($courseIds);
 
-        return view('teacher.marks.index', compact('courses'));
+        $marks = auth()->user()->teacher->marks->reverse();
+
+        return view('teacher.marks.index', compact('courses', 'marks'));
+    }
+
+    function indexclaims()
+    {
+        $teacher = auth()->user()->teacher;
+
+        $marks = Mark::where('teacher_id', $teacher->id)->get();
+
+        return view('teacher.claims.index', compact('marks'));
     }
 
     public function createmarks($code)
@@ -49,15 +62,76 @@ class TeacherController extends Controller
         return view('teacher.marks.create', compact('course'));
     }
 
-    public function storemarks()
+    public function storemarks(Course $course)
     {
         request()->validate([
             'title' => 'required',
-            'url' => 'required'
+            'group' => 'required',
+            'url' => 'required|mimes:xlsx'
         ]);
 
-        dd(request()->all());
+        // get current semester
+        $client = new \GuzzleHttp\Client();
+        try {
+            $req = $client->get('http://localhost:9000/api/v2/auca/semester/current');
+        } catch (\Throwable $th) {
+            return back()->with('error', 'Failed to connect to remote server. check back later');
+        }
+        $response = json_decode($req->getBody());
 
-        return back()->with('succes', 'marks uploaded successully.');
+        if (!$response) {
+            return back()->with('error', 'No current semester available.');
+        }
+        $semester = $response;
+
+        // create marks
+        $mark = Mark::create([
+            'teacher_id' => auth()->user()->teacher->id,
+            'course_id' => $course->id,
+            'title' => request('title'),
+            'group' => request('group'),
+            'semester_name' => $semester->name,
+            'semester_start_date' => $semester->start_date,
+            'semester_end_date' => $semester->end_date,
+            'claim_deadline' => Carbon::now()->addDays(5),
+        ]);
+
+        // Process the Excel file
+        Excel::import(new MarksExcelImport($mark->id), request()->file('url'));
+
+        return redirect()->route('teacher.marks.index')->with('success', 'marks uploaded successully.');
+    }
+
+    public function editmarks(Mark $mark)
+    {
+        return view('teacher.marks.edit', compact('mark'));
+    }
+
+
+    public function updatemarks(Mark $mark)
+    {
+        request()->validate([
+            'group' => 'required',
+            'title' => 'required',
+            'url' => 'required|mimes:xlsx'
+        ]);
+
+        $mark->group = request('group');
+        $mark->title = request('title');
+        $mark->update();
+
+        // delete old mark excels
+        $mark->markExcels()->delete();
+        // Process the Excel file
+        Excel::import(new MarksExcelImport($mark->id), request()->file('url'));
+
+        return redirect()->route('teacher.claims.index')->with('success', 'marks updated successully.');
+    }
+
+    function deleteclaim(Claim $claim)
+    {
+        $claim->delete();
+
+        return back()->with('success', 'claim deleted successfully');
     }
 }

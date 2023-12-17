@@ -1,1 +1,0 @@
-teacher index courses

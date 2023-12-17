@@ -42,33 +42,29 @@ class RegisteredUserController extends Controller
 
         $client = new \GuzzleHttp\Client();
         // GET STUDENT
-        $req = $client->get('http://localhost:9000/api/v2/auca/student/' . request('rollno'));
+        try {
+            $req = $client->get('http://localhost:9000/api/v2/auca/student/' . request('rollno'));
+        } catch (\Throwable $th) {
+            return back()->with('error', 'Failed to connect to remote server. check back later');
+        }
         $response = json_decode($req->getBody());
 
         if (!$response) {
-
             return back()->withErrors(["unregisteredStudent" => "Student ID not registered in the school system"]);
         } else {
 
-            // STUDENT EXISTS IN SCHOOL SYSTEM
-            // Returned data
-            // {
-            //     "rollno": 24111,
-            //     "names": "Miss Nya Zboncak DDS",
-            //     "email": "kristian.wolff@example.com",
-            //     "phone": "1-985-531-1621"
-            // }
-            // CREATE STUDENT
-            // CREATE USER
-            // LOG IN THE USER
-
+            // create student
             $student = Student::create([
                 'rollno' => $response->rollno,
                 'names' => $response->names,
                 'email' => request('email'),
                 'phone' => $response->phone,
+                'faculty' => $response->faculty,
+                'department' => $response->department,
+                'program' => $response->program,
             ]);
 
+            // create user account and associate it with the student
             $user = User::create([
                 'student_id' => $student->id,
                 'rollno' => $student->rollno,

@@ -21,7 +21,11 @@ class CreateMarksTable extends Migration
             $table->unsignedBigInteger('course_id');
 
             $table->string('title');
-            $table->string('url');
+            $table->enum('group', ['A', 'E']);
+            $table->string('semester_name');
+            $table->date('semester_start_date');
+            $table->date('semester_end_date');
+            $table->timestamp('claim_deadline');
 
             $table->foreign('teacher_id')->references('id')->on('teachers');
             $table->foreign('course_id')->references('id')->on('courses');

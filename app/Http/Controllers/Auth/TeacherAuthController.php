@@ -34,6 +34,7 @@ class TeacherAuthController extends Controller
      */
     public function login(Request $request, AuthenticatesTeacher $auth)
     {
+        set_time_limit(300);
 
         // 1. validate input
         $this->validate($request, [
@@ -42,7 +43,13 @@ class TeacherAuthController extends Controller
 
         // 2. check if teacher exists in school db
         $client = new \GuzzleHttp\Client();
-        $req = $client->get('http://localhost:9000/api/v2/auca/teacher/' . request('email'));
+
+        try {
+            $req = $client->get('http://localhost:9000/api/v2/auca/teacher/' . request('email'));
+        } catch (\Throwable $th) {
+            return back()->with('error', 'Failed to connect to remote server. check back later');
+        }
+
         $response = json_decode($req->getBody());
 
         // 3. if teacher does not exist in school db
@@ -63,14 +70,14 @@ class TeacherAuthController extends Controller
                     'names' => $teacher->names,
                     'email' => $teacher->email,
                 ]);
-                // 4. else send email link with login token
+                // 4. send email link with login token
                 $auth->invite($user);
             } else {
 
-                // 4. else send email link with login token
+                // 4. send email link with login token
                 $auth->invite($teacher->user);
             }
-            return back()->with('success', 'Please check Login link sent to ' . request('email'));
+            return back()->with('success', 'success!! Please check Login link sent to ' . request('email'));
         }
 
         if (auth()->guard('is_teacher')->attempt([
@@ -83,24 +90,6 @@ class TeacherAuthController extends Controller
         } else {
             return redirect()->back()->withError('Credentials doesn\'t match.');
         }
-
-        //-------------------------------------------//
-        // $this->validate($request, [
-        //     'email' => 'required|email',
-        //     'password' => 'required',
-        // ]);
-
-        // if (auth()->guard('is_teacher')->attempt([
-        //     'email' => $request->email,
-        //     'password' => $request->password,
-        // ])) {
-        //     $user = auth()->user();
-
-        //     return redirect()->intended(url('/teacher/dashboard'));
-        // } else {
-        //     return redirect()->back()->withError('Credentials doesn\'t match.');
-        // }
-        //----------------------------------------------------//
     }
 
     public function authenticate(LoginToken $token)

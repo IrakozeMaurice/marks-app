@@ -12,25 +12,31 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
 
   <!-- Styles -->
+  <link rel="stylesheet" href="{{ asset('css/bulma.css') }}">
   <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+  <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
+  <link rel="stylesheet" href="{{ asset('css/fontawesome-all.css') }}">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito&display=swap" rel="stylesheet" />
 
   <!-- Scripts -->
   <script src="{{ asset('js/app.js') }}" defer></script>
+  <style>
+    body {
+      font-family: "Nunito", monospace;
+    }
+
+    tr:has(td.rollno) {
+      background-color: #17a2b8;
+    }
+  </style>
 </head>
 
-<body class="font-sans antialiased">
+<body>
   <div class="min-h-screen bg-gray-100">
     @include('layouts.navigation')
-    {{-- 
-    <!-- Page Heading -->
-    <header class="bg-white shadow flex">
-      <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-        {{ $header }}
-      </div>
-      <div>
-        {{ $menu }}
-      </div>
-    </header> --}}
 
     <!-- Page Content -->
     <main>
