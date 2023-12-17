@@ -27,6 +27,15 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Nunito&display=swap" rel="stylesheet" />
 
+  {{-- datatables --}}
+
+  <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
+  <link rel="stylesheet" href="{{ asset('css/jquery.datatables.min.css') }}">
+  <script src="{{ asset('js/jquery-3.5.1.min.js') }}"></script>
+  <script src="{{ asset('js/jquery.dataTables.min.js') }}"></script>
+
+  {{-- datatables --}}
+
   <style>
     body {
       font-family: "Nunito", monospace;
@@ -34,6 +43,10 @@
 
     tr:has(td.rollno) {
       background-color: #17a2b8;
+    }
+
+    select {
+      width: 80px !important;
     }
   </style>
 

@@ -13,46 +13,83 @@
       <h2><b>My courses</b></h2>
     </div>
 
-    <table class="table mt-2 small">
-      <tr>
-        <th>Course code</th>
-        <th>Course Name</th>
-        <th>Credits</th>
-        <th>Actions</th>
-      </tr>
-      @foreach ($courses as $course)
+    <table id="tableSearch" class="table mt-2 small">
+      <thead>
         <tr>
-          <td>{{ $course->code }}</td>
-          <td>{{ $course->name }}</td>
-          <td>{{ $course->credits }}</td>
-          <td><a href="{{ route('teacher.marks.create', $course->code) }}"
-              class="button is-small has-background-info has-text-white">Upload marks</a></td>
+          <th>Course code</th>
+          <th>Course Name</th>
+          <th>Credits</th>
+          <th>Actions</th>
         </tr>
-      @endforeach
-      <tr>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-      </tr>
+      </thead>
+      <tbody>
+        @foreach ($courses as $course)
+          <tr>
+            <td>{{ $course->code }}</td>
+            <td>{{ $course->name }}</td>
+            <td>{{ $course->credits }}</td>
+            <td><a href="{{ route('teacher.marks.create', $course->code) }}"
+                class="button is-small has-background-info has-text-white">Upload marks</a></td>
+          </tr>
+        @endforeach
+      </tbody>
+      <tfoot>
+        <tr>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+      </tfoot>
     </table>
     <div class="box mt-4">
       <h2><b>My Recently uploaded marks</b></h2>
     </div>
-    <table class="table mt-2 small">
+    <table id="tableSearch2" class="table mt-2 small">
 
-      <tr>
-        <th>Marks title</th>
-        <th>Course code</th>
-        <th>Course name</th>
-      </tr>
-      @foreach ($marks as $mark)
+      <thead>
         <tr>
-          <td>{{ $mark->title }}</td>
-          <td>{{ $mark->course->code }}</td>
-          <td>{{ $mark->course->name }}</td>
+          <th>Marks title</th>
+          <th>Course code</th>
+          <th>Course name</th>
         </tr>
-      @endforeach
+      </thead>
+      <tbody>
+        @foreach ($marks as $mark)
+          <tr>
+            <td>{{ $mark->title }}</td>
+            <td>{{ $mark->course->code }}</td>
+            <td>{{ $mark->course->name }}</td>
+          </tr>
+        @endforeach
+      </tbody>
+      <tfoot>
+        <tr>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+      </tfoot>
     </table>
   </div>
 @endsection
+
+
+@section('dataTableFooter')
+  {{-- <script src="{{ asset('js/jquery-3.5.1.min.js') }}"></script> --}}
+
+  <script>
+    $(document).ready(function() {
+      $.noConflict();
+      $('#tableSearch').DataTable({
+        "order": []
+      });
+      $('#tableSearch2').DataTable({
+        "order": []
+      });
+    });
+  </script>
+@endsection
+{{-- @yield('scripts')
+
+  @yield('dataTableFooter') --}}
