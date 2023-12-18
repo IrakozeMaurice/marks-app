@@ -40,7 +40,7 @@
 
 ```bash
 2 laravel apps
-one acting as an api - simulates the auca registation
+one acting as an api - simulates the auca registation (github link: https://github.com/IrakozeMaurice/auca-registration-api)
 onother acting as the main app - retrieves all information needed from the api
 ```
 
