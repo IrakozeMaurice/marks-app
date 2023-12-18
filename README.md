@@ -35,3 +35,20 @@
 ![Alt text](image-10.png)
 
 ![Alt text](image-11.png)
+
+### Technologies / Tools used
+
+```bash
+2 laravel apps
+one acting as an api - simulates the auca registation
+onother acting as the main app - retrieves all information needed from the api
+```
+
+```bash
+php
+laravel
+tailwind css
+mysql
+vanilla js
+axios
+```
